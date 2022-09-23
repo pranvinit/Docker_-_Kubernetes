@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: testtwo-srv
+spec:
+  type: ClusterIP # Default
+  selector:
+    app: testtwo
+  ports:
+    - name: testtwo
+      protocol: TCP
+      port: 6000 # Port of pod that will serve traffic to target port
+      targetPort: 6000 # Port of live process running in a container of the Pod with name testtwo

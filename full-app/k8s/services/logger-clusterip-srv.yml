@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: logger-clusterip-service
+spec:
+  type: ClusterIP # Default
+  selector:
+    app: logger
+  ports:
+    - name: logger
+      protocol: TCP
+      port: 6000
+      targetPort: 6000

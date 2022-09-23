@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: testone-srv
+spec:
+  type: ClusterIP # Default
+  selector:
+    app: testone
+  ports:
+    - name: testone
+      protocol: TCP
+      port: 6000 # Port of pod that will serve traffic to target port
+      targetPort: 6000 # Port of live process running in a container of the Pod with name testtwo

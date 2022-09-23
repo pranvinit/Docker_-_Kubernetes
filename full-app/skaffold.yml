@@ -1,0 +1,39 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - k8s/deployments/*
+      - ./k8s/services/*
+build:
+  local:
+    push: false # Dont push new changes to Docker Hub
+  artifacts:
+    - image: pranv21/full-client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: "src/**/*.js" # Update *.js files in-place. Rebuild and Reapply the image for changes to any other files
+          - dest: .
+            src: "src/**/*.jsx" # Update *.js files in-place. Rebuild and Reapply the image for changes to any other files
+          - dest: .
+            src: "src/**/*.css" # Update *.css files in-place.
+    - image: pranv21/full-server
+      context: server
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: "*.js"
+    - image: pranv21/full-logger
+      context: logger
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: "*.js"
