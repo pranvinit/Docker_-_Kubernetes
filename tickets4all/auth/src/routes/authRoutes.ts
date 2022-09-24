@@ -20,7 +20,11 @@ router.post(
     if (!user) {
       throw new NotFoundError("User not found");
     }
-    if (user.password !== password) {
+    const isPasswordCorrect = await user.comparePassword(
+      user.password,
+      password
+    );
+    if (!isPasswordCorrect) {
       res.json(400).json([{ error: "Invalid credentials." }]);
     }
 
@@ -42,6 +46,7 @@ router.post(
     }
 
     const { name, email, password } = req.body;
+
     const user = await db.User.create({ name, email, password });
     res.status(201).json({ user });
   }
